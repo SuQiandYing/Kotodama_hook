@@ -1,0 +1,74 @@
+﻿#include "pch.h"
+#include "config.h"
+#include <shlwapi.h>
+#include <stdlib.h>
+
+#pragma comment(lib, "Shlwapi.lib")
+
+namespace Config {
+    wchar_t FontFileName[MAX_PATH] = L"galgame_cnjp.ttf";
+    wchar_t ForcedFontNameW[64] = L"galgame";
+    char    ForcedFontNameA[64] = "galgame";
+    DWORD   ForcedCharset = 128;
+    double  FontHeightScale = 1.0;
+    int     FontWeight = 0;
+
+    bool    EnableWindowTitleHook = false;
+    wchar_t CustomTitleW[256] = L"Default Title";
+    char    CustomTitleA[256] = "Default Title";
+
+    bool    EnableFileHook = false;
+    wchar_t RedirectFolderW[MAX_PATH] = L"Kotodama";
+    char    RedirectFolderA[MAX_PATH] = "Kotodama";
+    wchar_t ArchiveFileName[MAX_PATH] = L"Kotodama.chs";
+
+    UINT    LE_Codepage = 932;
+    UINT    LE_LocaleID = 1041;
+    UINT    LE_Charset = 128;
+    wchar_t LE_Timezone[128] = L"Tokyo Standard Time";
+
+    bool    EnableDebug = false;
+
+    void WCharToChar(const wchar_t* src, char* dest, int destSize) {
+        WideCharToMultiByte(CP_ACP, 0, src, -1, dest, destSize, NULL, NULL);
+    }
+
+    void LoadConfiguration(HMODULE hModule) {
+        wchar_t iniPath[MAX_PATH];
+        if (GetModuleFileNameW(hModule, iniPath, MAX_PATH)) {
+            PathRemoveFileSpecW(iniPath);
+            PathAppendW(iniPath, L"Kotodama.ini");
+        }
+        else {
+            return;
+        }
+
+        if (!PathFileExistsW(iniPath)) return;
+
+        GetPrivateProfileStringW(L"Font", L"FileName", FontFileName, FontFileName, MAX_PATH, iniPath);
+        GetPrivateProfileStringW(L"Font", L"FaceName", ForcedFontNameW, ForcedFontNameW, 64, iniPath);
+        WCharToChar(ForcedFontNameW, ForcedFontNameA, 64);
+        ForcedCharset = GetPrivateProfileIntW(L"Font", L"Charset", ForcedCharset, iniPath);
+        wchar_t tempScale[32];
+        GetPrivateProfileStringW(L"Font", L"HeightScale", L"1.0", tempScale, 32, iniPath);
+        FontHeightScale = _wtof(tempScale);
+        if (FontHeightScale <= 0.0) FontHeightScale = 1.0;
+        FontWeight = GetPrivateProfileIntW(L"Font", L"Weight", FontWeight, iniPath);
+
+        EnableWindowTitleHook = GetPrivateProfileIntW(L"Window", L"Enable", 0, iniPath);
+        GetPrivateProfileStringW(L"Window", L"Title", CustomTitleW, CustomTitleW, 256, iniPath);
+        WCharToChar(CustomTitleW, CustomTitleA, 256);
+
+        EnableFileHook = GetPrivateProfileIntW(L"FileRedirect", L"Enable", 0, iniPath);
+        GetPrivateProfileStringW(L"FileRedirect", L"Folder", RedirectFolderW, RedirectFolderW, MAX_PATH, iniPath);
+        WCharToChar(RedirectFolderW, RedirectFolderA, MAX_PATH);
+        GetPrivateProfileStringW(L"FileRedirect", L"ArchiveFile", ArchiveFileName, ArchiveFileName, MAX_PATH, iniPath);
+
+        LE_Codepage = GetPrivateProfileIntW(L"LocaleEmulator", L"CodePage", 932, iniPath);
+        LE_LocaleID = GetPrivateProfileIntW(L"LocaleEmulator", L"LocaleID", 1041, iniPath);
+        LE_Charset = GetPrivateProfileIntW(L"LocaleEmulator", L"Charset", 128, iniPath);
+        GetPrivateProfileStringW(L"LocaleEmulator", L"Timezone", L"Tokyo Standard Time", LE_Timezone, 128, iniPath);
+
+        EnableDebug = GetPrivateProfileIntW(L"Debug", L"Enable", 0, iniPath);
+    }
+}
