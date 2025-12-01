@@ -1,11 +1,14 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "config.h"
 #include <shlwapi.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #pragma comment(lib, "Shlwapi.lib")
 
 namespace Config {
+    bool    IsSystemEnabled = true;
+
     wchar_t FontFileName[MAX_PATH] = L"galgame_cnjp.ttf";
     wchar_t ForcedFontNameW[64] = L"galgame";
     char    ForcedFontNameA[64] = "galgame";
@@ -40,10 +43,23 @@ namespace Config {
             PathAppendW(iniPath, L"Kotodama.ini");
         }
         else {
-            return;
+            MessageBoxW(NULL, L"无法获取模块路径", L"系统错误", MB_OK | MB_ICONERROR);
+            ExitProcess(1);
         }
 
-        if (!PathFileExistsW(iniPath)) return;
+        if (!PathFileExistsW(iniPath)) {
+            wchar_t errorMsg[1024];
+            swprintf_s(errorMsg, 1024, L"启动失败：配置文件丢失！\n\n请确保 'Kotodama.ini' 位于以下路径：\n%s", iniPath);
+            MessageBoxW(NULL, errorMsg, L"错误", MB_OK | MB_ICONERROR | MB_TOPMOST);
+            ExitProcess(1);
+        }
+
+        int isEnabled = GetPrivateProfileIntW(L"System", L"Enable", 1, iniPath);
+        IsSystemEnabled = (isEnabled != 0);
+
+        if (!IsSystemEnabled) {
+            return;
+        }
 
         GetPrivateProfileStringW(L"Font", L"FileName", FontFileName, FontFileName, MAX_PATH, iniPath);
         GetPrivateProfileStringW(L"Font", L"FaceName", ForcedFontNameW, ForcedFontNameW, 64, iniPath);
