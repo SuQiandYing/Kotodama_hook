@@ -1,7 +1,9 @@
-﻿#pragma once
+#pragma once
 #include <windows.h>
 
 namespace Config {
+    extern bool    IsSystemEnabled;
+
     extern wchar_t FontFileName[MAX_PATH];
     extern wchar_t ForcedFontNameW[64];
     extern char    ForcedFontNameA[64];
@@ -27,7 +29,7 @@ namespace Config {
 
     namespace AuthorInfo {
         const bool ShowPopup = true;
-        const wchar_t* const AUTHOR_IDS[] = { 
+        const wchar_t* const AUTHOR_IDS[] = {
              L"是幼微鸭mua@ai2.moe (御爱同萌)",
              L"是幼微鸭mua@moyu.moe (鲲补丁站)"
         };
