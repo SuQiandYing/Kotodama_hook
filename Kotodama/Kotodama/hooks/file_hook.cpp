@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../pch.h"
 #include <windows.h>
 #include <stdio.h>
 #include <shlwapi.h>
@@ -343,3 +343,4 @@ namespace Hooks {
         Utils::Log("[Core] File Hook Installed.");
     }
 }
+
