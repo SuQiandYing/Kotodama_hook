@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../pch.h"
 #include "archive.h"
 #include "config.h"
 #include "utils.h"
@@ -163,3 +163,4 @@ namespace Archive {
         }
     }
 }
+
