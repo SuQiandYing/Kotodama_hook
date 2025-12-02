@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../pch.h"
 #include "utils.h"
 #include "config.h"
 #include <Shlwapi.h>
@@ -193,3 +193,4 @@ namespace Utils {
         }
     }
 }
+
