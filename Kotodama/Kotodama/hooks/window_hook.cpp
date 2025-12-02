@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../pch.h"
 #include "window_hook.h"
 #include "config.h"
 #include "utils.h"
@@ -116,3 +116,4 @@ namespace Hooks {
         Utils::Log("[Core] Window Hook Installed.");
     }
 }
+
