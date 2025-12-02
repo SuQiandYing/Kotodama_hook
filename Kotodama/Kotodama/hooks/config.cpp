@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../pch.h"
 #include "config.h"
 #include <shlwapi.h>
 #include <stdlib.h>
@@ -88,3 +88,4 @@ namespace Config {
         EnableDebug = GetPrivateProfileIntW(L"Debug", L"Enable", 0, iniPath);
     }
 }
+
