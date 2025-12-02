@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "../pch.h"
 #include "locale_emulator.h"
 #include "config.h"
 #include <vector>
@@ -105,3 +105,4 @@ bool LocaleEmulator::relaunchProcess() {
         return false;
     }
 }
+
