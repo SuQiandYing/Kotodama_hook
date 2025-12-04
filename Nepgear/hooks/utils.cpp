@@ -1,4 +1,4 @@
-﻿#include "../pch.h"
+#include "../pch.h"
 #include "utils.h"
 #include "config.h"
 #include <Shlwapi.h>
@@ -174,8 +174,7 @@ namespace Utils {
                 if (utf8Len > 0) {
                     std::vector<char> utf8Buf(utf8Len);
                     WideCharToMultiByte(CP_UTF8, 0, wBuf.data(), -1, utf8Buf.data(), utf8Len, NULL, NULL);
-                    printf("[Hook] %s\n", utf8Buf.data());
-nepgear                }
+                    printf("[Hook] %s\n", utf8Buf.data());                }
             }
             else {
                 printf("[Hook] %s\n", buffer);
