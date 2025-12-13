@@ -50,42 +50,90 @@
 
 ```ini
 [System]
-Enable=1                ; 启用/禁用插件
+; 全局开关，设为 0 将禁用所有功能
+Enable=1
 
 [Font]
-Enable=1                ; 启用字体 Hook
-FileName=galgame_cnjp.ttf ; 字体文件名 (需放在游戏目录)
-FaceName=galgame        ; 字体名称 (通常不需要修改，除非游戏检查字体名)
+; 是否启用字体Hook (0 = 关闭, 1 = 开启)
+Enable=1
 
-; 字符集强制替换 (128=Shift-JIS, 134=GB2312)
+; 字体文件名（必须放在游戏根目录或重定向文件夹内）
+; 若留空则使用系统默认字体
+FileName=galgame_cnjp.ttf
+
+; 字体名称（CreateFont 中的 FaceName）
+; 建议与 FileName 中的字体内名称保持一致
+FaceName=galgame
+
+; 字体字符集 (128 = Shift-JIS, 134 = GB2312, 1 = Default)
+; 如果汉化后出现乱码尝试改为 134 或 1
 Charset=128
+
+; 是否启用字体名称替换 (0 = 关闭, 1 = 开启)
+; 设为0时不会将字体名替换为 FaceName 指定的字体
+EnableFaceNameReplace=1
+
+; 是否启用字符集替换 (0 = 关闭, 1 = 开启)
+; 设为0时不会修改原始字符集
 EnableCharsetReplace=1
 
-; 字体宽高缩放 (1.0 为原始比例)
+; 是否启用字体高度缩放 (0 = 关闭, 1 = 开启)
 EnableHeightScale=1
+; 字体高度缩放比例 (支持小数，例如 0.9 或 1.2)
+; 用于修正汉化后字体过大或过小的问题
 HeightScale=1.0
+
+; 是否启用字体宽度缩放 (0 = 关闭, 1 = 开启)
 EnableWidthScale=1
+; 字体宽度缩放比例 (支持小数，例如 0.8 或 1.5)
+; 用于调整字体横向宽窄
 WidthScale=1.0
 
-; 字体粗细 (0=默认, 400=正常, 700=粗体)
+; 是否启用字体粗细调整 (0 = 关闭, 1 = 开启)
 EnableWeight=1
+; 字体粗细 (0 = 默认, 400 = 标准, 700 = 粗体)
+; 注意：设为0表示使用程序原本请求的粗细
 Weight=0
 
 [Window]
-Enable=1                ; 启用窗口标题修改
-Title=自定义游戏标题     ; 新的窗口标题
+; 是否启用窗口标题修改 (0 = 关闭, 1 = 开启)
+Enable=1
+
+; 自定义窗口标题内容
+Title=托比之心灵归来。
 
 [FileRedirect]
-Enable=1                ; 启用文件重定向
-Folder=Nepgear          ; 重定向读取的文件夹名称
-ArchiveFile=Nepgear.chs ; 打包资源文件名 (优先级低于文件夹)
+; 是否启用文件重定向 (0 = 关闭, 1 = 开启)
+; 开启后，游戏读取文件时会优先从 Folder 指定的文件夹中查找
+Enable=1
+
+; 重定向文件夹名称 (默认为 Nepgear)
+Folder=Nepgear
+
+; 压缩包文件名（如果使用压缩模式）
+ArchiveFile=Nepgear.chs
 
 [LocaleEmulator]
-Enable=1                ; 启用区域模拟
-CodePage=932            ; 模拟代码页 (932=日语, 936=中文)
-LocaleID=1041           ; 区域 ID (1041=日语, 2052=中文)
-Charset=128             ; 默认字符集
-Timezone=Tokyo Standard Time ; 模拟时区
+; 是否启用区域模拟集成 (0 = 关闭, 1 = 开启)
+; 只有设置为 1 时才会将 LoaderDll.dll 和 LocaleEmulator.dll 载入游戏根目录并执行区域
+Enable=1
+
+; 代码页 (932 = 日文 Shift-JIS, 936 = 中文 GBK)
+CodePage=932
+
+; 区域 ID (1041 = 日本, 2052 = 中国)
+LocaleID=1041
+
+; 字符集 ID (128 = Shift-JIS, 134 = GB2312)
+Charset=128
+
+; 时区设置 (Tokyo Standard Time = 东京时区, China Standard Time = 中国标准时间)
+Timezone=Tokyo Standard Time
+
+[Debug]
+; 是否开启调试控制台 (0 = 关闭, 1 = 开启)
+; 开启后会弹出一个 CMD 窗口显示 Hook 时的日志（用于排查文件加载等）
+Enable=1
 ```
 
 ### 3. 使用 Packer 打包资源
